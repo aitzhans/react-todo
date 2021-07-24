@@ -20,6 +20,9 @@
       }
     ],
     "linebreak-style": 0,
-    "react/jsx-filename-extension": 0
+    "react/jsx-filename-extension": 0,
+    "array-bracket-spacing": 0,
+    "comma-dangle": 0,
+    "react/prop-types": 0
   }
 }

@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import css from './main.scss';
-
-const App = () => <p>Todo App</p>;
+import App from './components/App';
 
 ReactDOM.render(<App />, document.getElementById('root'));

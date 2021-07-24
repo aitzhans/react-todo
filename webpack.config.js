@@ -2,15 +2,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env) => {
-
   const isProd = env.production;
 
+  // eslint-disable-next-line arrow-body-style
   const getStyleLoaders = () => {
     return [
       isProd ? MiniCssExtractPlugin.loader : 'style-loader',
       'css-loader'
-    ]
-  }
+    ];
+  };
 
   const getPlugins = () => {
     const plugins = [
@@ -27,7 +27,7 @@ module.exports = (env) => {
       );
     }
     return plugins;
-  }
+  };
 
   return {
     mode: isProd ? 'production' : 'development',
@@ -40,7 +40,7 @@ module.exports = (env) => {
       rules: [
 
         {
-          test: /\.js$/,
+          test: /\.jsx?$/,
           exclude: /node_modules/,
           loader: 'babel-loader'
         },
@@ -91,7 +91,10 @@ module.exports = (env) => {
 
     devServer: {
       open: true
-    }
-  }
+    },
 
+    resolve: {
+      extensions: ['', '.js', '.jsx'],
+    }
+  };
 };
