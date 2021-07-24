@@ -1,22 +1,15 @@
 import React from 'react';
-import { Text } from '@epam/loveship';
-import { FlexRow } from '@epam/uui-components';
+import { Text, FlexRow } from '@epam/loveship';
 
 export default function TodoHeader() {
   return (
-    <div>
-      <FlexRow
-        size="24"
+    <FlexRow>
+      <Text
+        font="sans-semibold"
+        fontSize="18"
       >
-        <Text
-          font="sans-semibold"
-          fontSize="16"
-          lineHeight="24"
-          size="48"
-        >
-          Text Header
-        </Text>
-      </FlexRow>
-    </div>
+        <h1 style={{ margin: 0 }}>Todo List</h1>
+      </Text>
+    </FlexRow>
   );
 }

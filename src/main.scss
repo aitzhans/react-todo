@@ -1,5 +1,13 @@
-$body-color: lightblue;
+$body-color: #ebecf0;
+$wrapper-color: #f5f6fa;
 
 body {
   background-color: $body-color;
+}
+
+.wrapper {
+  width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: $wrapper-color;
 }
