@@ -8,8 +8,8 @@ const TodoListContextProvider = (props) => {
   const { children } = props;
 
   const [todos, setTodos] = useState([
-    { title: 'Cook the breakfast', done: false, id: 1 },
-    { title: 'Wash the dishes', done: true, id: 2 },
+    { title: 'Cook the breakfast', done: true, id: 1 },
+    { title: 'Wash the dishes', done: false, id: 2 },
     { title: 'Write some code', done: false, id: 3 },
   ]);
 
@@ -23,6 +23,7 @@ const TodoListContextProvider = (props) => {
 
   useEffect(() => {
     setTodosCount(todos.filter((item) => !item.done).length);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredTodos]);
 
   const addTodo = (title) => {
