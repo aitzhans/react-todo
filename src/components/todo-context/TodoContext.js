@@ -1,15 +1,29 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+
+import FILTERS from '../consts/consts';
 
 export const TodoListContext = createContext();
 
 const TodoListContextProvider = (props) => {
   const { children } = props;
-  // eslint-disable-next-line no-unused-vars
+
   const [todos, setTodos] = useState([
     { title: 'Cook the breakfast', done: false, id: 1 },
     { title: 'Wash the dishes', done: true, id: 2 },
     { title: 'Write some code', done: false, id: 3 },
   ]);
+
+  const [ filteredTodos, setFilteredTodos ] = useState([
+    ...todos.filter((item) => !item.done)
+  ]);
+
+  const [ editedValue, setEditedValue] = useState(null);
+
+  const [todosCount, setTodosCount] = useState(filteredTodos.length);
+
+  useEffect(() => {
+    setTodosCount(todos.filter((item) => !item.done).length);
+  }, [filteredTodos]);
 
   const addTodo = (title) => {
     setTodos([
@@ -25,7 +39,24 @@ const TodoListContextProvider = (props) => {
   };
 
   const editTodo = (todo) => {
-    console.log('edited', todo);
+    setEditedValue(todo);
+  };
+
+  const updateTodo = (title) => {
+    const updatedTodo = {
+      ...editedValue,
+      title
+    };
+    const updatedTodos = todos.map((el) => {
+      if (el.id === editedValue.id) {
+        return updatedTodo;
+      }
+      return el;
+    });
+    setTodos([
+      ...updatedTodos
+    ]);
+    setEditedValue(null);
   };
 
   const checkUncheck = (todo) => {
@@ -44,6 +75,28 @@ const TodoListContextProvider = (props) => {
     ]);
   };
 
+  const filterTodos = (filter) => {
+    switch (filter) {
+      case FILTERS.ALL:
+        setFilteredTodos([
+          ...todos
+        ]);
+        break;
+      case FILTERS.TODO:
+        setFilteredTodos([
+          ...todos.filter((item) => !item.done)
+        ]);
+        break;
+      case FILTERS.DONE:
+        setFilteredTodos([
+          ...todos.filter((item) => item.done)
+        ]);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <TodoListContext.Provider
       value={{
@@ -51,7 +104,12 @@ const TodoListContextProvider = (props) => {
         addTodo,
         deleteTodo,
         editTodo,
-        checkUncheck
+        checkUncheck,
+        editedValue,
+        updateTodo,
+        filteredTodos,
+        filterTodos,
+        todosCount
       }}
     >
       {children}

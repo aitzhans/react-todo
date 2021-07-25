@@ -8,11 +8,11 @@ import TodoItem from '../todo-item';
 import Actions from '../actions/Actions';
 
 export default function TodoList() {
-  const { todos } = useContext(TodoListContext);
+  const { filteredTodos } = useContext(TodoListContext);
   const [value, onValueChange] = useState({});
 
   const dataSource = useArrayDataSource({
-    items: todos,
+    items: filteredTodos,
   });
 
   const view = dataSource.useView(value, onValueChange, {});

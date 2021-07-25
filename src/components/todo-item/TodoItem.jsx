@@ -5,11 +5,9 @@ import { TodoListContext } from '../todo-context/TodoContext';
 
 export default function TodoItem({ todo }) {
   const { checkUncheck } = useContext(TodoListContext);
-  const { title, done, id } = todo;
-  console.log(todo);
+  const { title, done } = todo;
 
   const handleCheckbox = () => {
-    console.log('click');
     checkUncheck(todo);
   };
 

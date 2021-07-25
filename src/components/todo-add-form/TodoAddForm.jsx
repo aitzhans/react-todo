@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   FlexRow, FlexCell, TextInput, Button
 } from '@epam/loveship';
@@ -6,13 +6,29 @@ import {
 import { TodoListContext } from '../todo-context/TodoContext';
 
 export default function TodoAddForm() {
+  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
   const [value, setValue] = useState('');
-  const { addTodo } = useContext(TodoListContext);
+  const [buttonCaption, setButtonCaption] = useState('Add Todo');
+
+  useEffect(() => {
+    if (editedValue) {
+      setValue(editedValue.title);
+      setButtonCaption('Edit Todo');
+      // console.log(editedValue);
+    } else {
+      setValue('');
+    }
+  }, [editedValue]);
 
   const handleSubmit = () => {
     if (value !== '') {
-      addTodo(value);
+      if (editedValue) {
+        updateTodo(value);
+      } else {
+        addTodo(value);
+      }
       setValue('');
+      setButtonCaption('Add Todo');
     }
   };
 
@@ -24,9 +40,9 @@ export default function TodoAddForm() {
   return (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="Please type text" />
+        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
       </FlexCell>
-      <Button color="grass" caption="Add Todo" onClick={handleSubmit} />
+      <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
     </FlexRow>
   );
 }

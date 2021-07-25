@@ -4,10 +4,6 @@ import { FlexRow } from '@epam/loveship';
 import ActionButton from './ActionButton';
 import { TodoListContext } from '../todo-context/TodoContext';
 
-// const onAction = (action) => {
-//   console.log(action);
-// };
-
 export default function Actions({ todo }) {
   const { deleteTodo, editTodo } = useContext(TodoListContext);
 
