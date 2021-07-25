@@ -18,11 +18,23 @@ const TodoListContextProvider = (props) => {
     ]);
   };
 
+  const deleteTodo = (todo) => {
+    setTodos([
+      ...todos.filter((el) => el.id !== todo.id)
+    ]);
+  };
+
+  const editTodo = (todo) => {
+    console.log('edited', todo);
+  };
+
   return (
     <TodoListContext.Provider
       value={{
         todos,
-        addTodo
+        addTodo,
+        deleteTodo,
+        editTodo
       }}
     >
       {children}

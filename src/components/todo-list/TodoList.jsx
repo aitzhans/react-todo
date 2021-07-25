@@ -29,7 +29,7 @@ export default function TodoList() {
     {
       key: 'actions',
       caption: 'Possible Actions',
-      render: () => <Actions />,
+      render: (item) => <Actions todo={item} />,
       grow: 0,
       shrink: 0,
       minWidth: 200,
