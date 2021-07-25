@@ -12,23 +12,6 @@ module.exports = (env) => {
     ];
   };
 
-  const getPlugins = () => {
-    const plugins = [
-      new HtmlWebpackPlugin({
-        title: 'React Todo App',
-        template: 'public/index.html'
-      })
-    ];
-    if (isProd) {
-      plugins.push(
-        new MiniCssExtractPlugin({
-          filename: 'main-[hash:8].css'
-        })
-      );
-    }
-    return plugins;
-  };
-
   return {
     mode: isProd ? 'production' : 'development',
 
@@ -87,7 +70,15 @@ module.exports = (env) => {
       ]
     },
 
-    plugins: getPlugins(),
+    plugins: [
+      new HtmlWebpackPlugin({
+        title: 'React Todo App',
+        template: 'public/index.html'
+      }),
+      new MiniCssExtractPlugin({
+        filename: 'main-[hash:8].css'
+      })
+    ],
 
     devServer: {
       open: true
