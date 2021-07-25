@@ -11,8 +11,20 @@ const TodoListContextProvider = (props) => {
     { todo: 'Write some code', done: false, id: 3 },
   ]);
 
+  const addTodo = (todo) => {
+    setTodos([
+      ...todos,
+      { todo, done: false, id: new Date().getUTCMilliseconds() },
+    ]);
+  };
+
   return (
-    <TodoListContext.Provider value={{ todos }}>
+    <TodoListContext.Provider
+      value={{
+        todos,
+        addTodo
+      }}
+    >
       {children}
     </TodoListContext.Provider>
   );
