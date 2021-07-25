@@ -21,7 +21,7 @@ export default function TodoList() {
     {
       key: 'todo',
       caption: 'Todo Task',
-      render: (item) => <TodoItem label={item.todo} isDone={item.isDone} />,
+      render: (item) => <TodoItem todo={item} />,
       isAlwaysVisible: true,
       grow: 0,
       minWidth: 300,

@@ -6,15 +6,15 @@ const TodoListContextProvider = (props) => {
   const { children } = props;
   // eslint-disable-next-line no-unused-vars
   const [todos, setTodos] = useState([
-    { todo: 'Cook the breakfast', done: false, id: 1 },
-    { todo: 'Wash the dishes', done: true, id: 2 },
-    { todo: 'Write some code', done: false, id: 3 },
+    { title: 'Cook the breakfast', done: false, id: 1 },
+    { title: 'Wash the dishes', done: true, id: 2 },
+    { title: 'Write some code', done: false, id: 3 },
   ]);
 
-  const addTodo = (todo) => {
+  const addTodo = (title) => {
     setTodos([
       ...todos,
-      { todo, done: false, id: new Date().getUTCMilliseconds() },
+      { title, done: false, id: new Date().getUTCMilliseconds() },
     ]);
   };
 
@@ -28,13 +28,30 @@ const TodoListContextProvider = (props) => {
     console.log('edited', todo);
   };
 
+  const checkUncheck = (todo) => {
+    const updatedTodo = {
+      ...todo,
+      done: !todo.done
+    };
+    const updatedTodos = todos.map((el) => {
+      if (el.id === todo.id) {
+        return updatedTodo;
+      }
+      return el;
+    });
+    setTodos([
+      ...updatedTodos
+    ]);
+  };
+
   return (
     <TodoListContext.Provider
       value={{
         todos,
         addTodo,
         deleteTodo,
-        editTodo
+        editTodo,
+        checkUncheck
       }}
     >
       {children}

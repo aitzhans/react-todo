@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Checkbox, FlexRow } from '@epam/loveship';
 
-export default function TodoItem({ label, isDone }) {
+import { TodoListContext } from '../todo-context/TodoContext';
+
+export default function TodoItem({ todo }) {
+  const { checkUncheck } = useContext(TodoListContext);
+  const { title, done, id } = todo;
+  console.log(todo);
+
+  const handleCheckbox = () => {
+    console.log('click');
+    checkUncheck(todo);
+  };
+
   return (
     <FlexRow vPadding="12" spacing="12">
-      <Checkbox size="18" label={label} value={isDone} onValueChange={() => console.log('checkbox')} />
+      <Checkbox size="18" label={title} value={done} onValueChange={handleCheckbox} />
     </FlexRow>
   );
 }
