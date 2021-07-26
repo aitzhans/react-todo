@@ -1,20 +1,27 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FlexRow, FlexCell, TextInput, Button
 } from '@epam/loveship';
+import { useRecoilState } from 'recoil';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import {
+  editedValue as editedValueAtom,
+  todosState as todosAtom
+} from '../recoil-atoms/atoms';
 
 export default function TodoAddForm() {
-  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
+  const [editedValue, setEditedValue] = useRecoilState(editedValueAtom);
+  const [todos, setTodos] = useRecoilState(todosAtom);
+
   const [value, setValue] = useState('');
   const [buttonCaption, setButtonCaption] = useState('Add Todo');
+  const inputEl = useRef(null);
 
   useEffect(() => {
     if (editedValue) {
       setValue(editedValue.title);
+      inputEl.current.focus();
       setButtonCaption('Edit Todo');
-      // console.log(editedValue);
     } else {
       setValue('');
     }
@@ -23,9 +30,17 @@ export default function TodoAddForm() {
   const handleSubmit = () => {
     if (value !== '') {
       if (editedValue) {
-        updateTodo(value);
+        const updatedTodo = {
+          ...editedValue,
+          title: value
+        };
+        setTodos(todos.map((el) => (el.id === editedValue.id ? updatedTodo : el)));
+        setEditedValue(null);
       } else {
-        addTodo(value);
+        setTodos([
+          ...todos,
+          { title: value, done: false, id: new Date().getUTCMilliseconds() }
+        ]);
       }
       setValue('');
       setButtonCaption('Add Todo');
@@ -33,14 +48,13 @@ export default function TodoAddForm() {
   };
 
   const handleChange = (e) => {
-    // console.log(e.slice(-1));
     setValue(e);
   };
 
   return (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
+        <TextInput ref={inputEl} value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
       </FlexCell>
       <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
     </FlexRow>

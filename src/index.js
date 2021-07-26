@@ -9,13 +9,17 @@ import svc from './services';
 import '@epam/uui-components/styles.css';
 import '@epam/loveship/styles.css';
 
+import { RecoilRoot } from 'recoil';
+
 const TodoApp = () => (
   <ContextProvider
     apiDefinition={() => null}
     loadAppContext={() => Promise.resolve({})}
     onInitCompleted={(context) => { Object.assign(svc, context); }}
   >
-    <App />
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </ContextProvider>
 );
 

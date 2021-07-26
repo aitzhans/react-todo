@@ -1,14 +1,14 @@
-import React, { useContext, useState } from 'react';
-// import { FlexRow } from '@epam/loveship';
+import React, { useState } from 'react';
 import { DataTable } from '@epam/loveship';
 import { useArrayDataSource } from '@epam/uui';
+import { useRecoilValue } from 'recoil';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { filteredTodosState as filteredTodosAtom } from '../recoil-atoms/atoms';
 import TodoItem from '../todo-item';
 import Actions from '../actions/Actions';
 
 export default function TodoList() {
-  const { filteredTodos } = useContext(TodoListContext);
+  const filteredTodos = useRecoilValue(filteredTodosAtom);
   const [value, onValueChange] = useState({});
 
   const dataSource = useArrayDataSource({
