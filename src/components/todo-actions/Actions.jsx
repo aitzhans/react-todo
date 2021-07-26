@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import ActionButton from './ActionButton';
 
-import { deleteTodo, editTodo } from '../../actionCreators';
+import { deleteTodo, editTodo } from '../../toolkit-reducer/todoSlice';
 
 export default function Actions({ todo }) {
   const dispatch = useDispatch();

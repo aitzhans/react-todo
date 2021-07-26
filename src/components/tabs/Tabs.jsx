@@ -3,7 +3,7 @@ import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 import { useSelector, useDispatch } from 'react-redux';
 
 import FILTERS from '../consts/consts';
-import { filterTodos } from '../../actionCreators';
+import { filterTodos } from '../../toolkit-reducer/todoSlice';
 
 export default function Tabs() {
   const dispatch = useDispatch();

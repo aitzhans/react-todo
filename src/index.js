@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import App from './components/App';
 import './main.scss';
 import svc from './services';
-import store from './store';
+import store from './toolkit-reducer/store';
 
 import '@epam/uui-components/styles.css';
 import '@epam/loveship/styles.css';

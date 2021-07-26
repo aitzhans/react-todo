@@ -4,7 +4,7 @@ import {
 } from '@epam/loveship';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { addTodo, updateTodo } from '../../actionCreators';
+import { addTodo, updateTodo } from '../../toolkit-reducer/todoSlice';
 
 export default function TodoAddForm() {
   const editedValue = useSelector((state) => state.editedValue);

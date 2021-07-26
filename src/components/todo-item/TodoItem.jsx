@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, FlexRow } from '@epam/loveship';
 import { useDispatch } from 'react-redux';
 
-import { checkUncheck } from '../../actionCreators';
+import { checkUncheck } from '../../toolkit-reducer/todoSlice';
 
 export default function TodoItem({ todo }) {
   const dispatch = useDispatch();
