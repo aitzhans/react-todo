@@ -1,20 +1,42 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import FILTERS from '../consts/consts';
-import { TodoListContext } from '../todo-context/TodoContext';
+import {
+  filteredTodosState as filteredTodosAtom,
+  todosCount as todosCountAtom,
+  todosState as todosAtom
+}
+  from '../recoil-atoms/atoms';
 
 export default function Tabs() {
-  const { todos, filterTodos, todosCount } = useContext(TodoListContext);
+  // eslint-disable-next-line no-unused-vars
+  const [ filteredTodos, filterTodos ] = useRecoilState(filteredTodosAtom);
+
+  const todos = useRecoilValue(todosAtom);
+  const [todosCount, setTodosCount] = useRecoilState(todosCountAtom);
+
   const [value, onValueChange] = useState('To do');
 
   const handleTabClick = (filter) => {
-    filterTodos(filter);
+    switch (filter) {
+      case FILTERS.TODO:
+        filterTodos(todos.filter((item) => !item.done));
+        break;
+      case FILTERS.DONE:
+        filterTodos(todos.filter((item) => item.done));
+        break;
+      default:
+        filterTodos(todos);
+        break;
+    }
     onValueChange(filter);
   };
 
   useEffect(() => {
-    filterTodos(value);
+    handleTabClick(value);
+    setTodosCount(todos.filter((item) => !item.done).length);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
 
