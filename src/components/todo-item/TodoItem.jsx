@@ -1,14 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Checkbox, FlexRow } from '@epam/loveship';
+import { useDispatch } from 'react-redux';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { checkUncheck } from '../../actionCreators';
 
 export default function TodoItem({ todo }) {
-  const { checkUncheck } = useContext(TodoListContext);
+  const dispatch = useDispatch();
   const { title, done } = todo;
 
   const handleCheckbox = () => {
-    checkUncheck(todo);
+    dispatch(checkUncheck(todo));
   };
 
   return (

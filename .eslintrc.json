@@ -26,6 +26,7 @@
     "react/prop-types": 0,
     "react/destructuring-assignment": 0,
     "react/display-name": 0,
-    "react/jsx-props-no-spreading": 0
+    "react/jsx-props-no-spreading": 0,
+    "no-case-declarations": 0
   }
 }

@@ -1,20 +1,23 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   FlexRow, FlexCell, TextInput, Button
 } from '@epam/loveship';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { addTodo, updateTodo } from '../../actionCreators';
 
 export default function TodoAddForm() {
-  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
+  const editedValue = useSelector((state) => state.editedValue);
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const [buttonCaption, setButtonCaption] = useState('Add Todo');
+  const inputEl = useRef(null);
 
   useEffect(() => {
     if (editedValue) {
       setValue(editedValue.title);
       setButtonCaption('Edit Todo');
-      // console.log(editedValue);
+      inputEl.current.focus();
     } else {
       setValue('');
     }
@@ -23,9 +26,9 @@ export default function TodoAddForm() {
   const handleSubmit = () => {
     if (value !== '') {
       if (editedValue) {
-        updateTodo(value);
+        dispatch(updateTodo(value));
       } else {
-        addTodo(value);
+        dispatch(addTodo(value));
       }
       setValue('');
       setButtonCaption('Add Todo');
@@ -33,14 +36,13 @@ export default function TodoAddForm() {
   };
 
   const handleChange = (e) => {
-    // console.log(e.slice(-1));
     setValue(e);
   };
 
   return (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
+        <TextInput ref={inputEl} value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
       </FlexCell>
       <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
     </FlexRow>

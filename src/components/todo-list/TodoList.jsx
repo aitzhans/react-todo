@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react';
-// import { FlexRow } from '@epam/loveship';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { DataTable } from '@epam/loveship';
 import { useArrayDataSource } from '@epam/uui';
 
-import { TodoListContext } from '../todo-context/TodoContext';
 import TodoItem from '../todo-item';
-import Actions from '../actions/Actions';
+import Actions from '../todo-actions/Actions';
 
 export default function TodoList() {
-  const { filteredTodos } = useContext(TodoListContext);
+  const filteredTodos = useSelector((state) => state.filteredTodos);
   const [value, onValueChange] = useState({});
 
   const dataSource = useArrayDataSource({

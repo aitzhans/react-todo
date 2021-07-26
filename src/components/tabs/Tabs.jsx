@@ -1,20 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
+import { useSelector, useDispatch } from 'react-redux';
 
 import FILTERS from '../consts/consts';
-import { TodoListContext } from '../todo-context/TodoContext';
+import { filterTodos } from '../../actionCreators';
 
 export default function Tabs() {
-  const { todos, filterTodos, todosCount } = useContext(TodoListContext);
+  const dispatch = useDispatch();
+
+  const todos = useSelector((state) => state.todos);
+  const todosCount = useSelector((state) => state.todosCount);
   const [value, onValueChange] = useState('To do');
 
   const handleTabClick = (filter) => {
-    filterTodos(filter);
+    dispatch(filterTodos(filter));
     onValueChange(filter);
   };
 
   useEffect(() => {
-    filterTodos(value);
+    dispatch(filterTodos(value));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [todos]);
 
