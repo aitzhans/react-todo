@@ -81,7 +81,8 @@ module.exports = (env) => {
     ],
 
     devServer: {
-      open: true
+      open: true,
+      liveReload: true,
     },
 
     resolve: {

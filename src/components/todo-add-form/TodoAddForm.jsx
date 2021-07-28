@@ -1,48 +1,47 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState, useContext, useEffect, useMemo, useRef
+} from 'react';
 import {
   FlexRow, FlexCell, TextInput, Button
 } from '@epam/loveship';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { TodoListContext } from '../todo-context/todoContext';
 
 export default function TodoAddForm() {
-  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
+  const { dispatch, editedTodo } = useContext(TodoListContext);
+  // const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
   const [value, setValue] = useState('');
-  const [buttonCaption, setButtonCaption] = useState('Add Todo');
+  const inputRef = useRef(null);
+  // console.log(value);
+  // const [buttonCaption, setButtonCaption] = useState('Add Todo');
 
   useEffect(() => {
-    if (editedValue) {
-      setValue(editedValue.title);
-      setButtonCaption('Edit Todo');
-      // console.log(editedValue);
-    } else {
-      setValue('');
+    if (editedTodo) {
+      inputRef.current.focus();
+      setValue(editedTodo.title);
     }
-  }, [editedValue]);
+  }, [editedTodo]);
 
   const handleSubmit = () => {
-    if (value !== '') {
-      if (editedValue) {
-        updateTodo(value);
-      } else {
-        addTodo(value);
-      }
-      setValue('');
-      setButtonCaption('Add Todo');
+    if (!editedTodo) {
+      dispatch({ type: 'add', payload: value });
+    } else {
+      dispatch({ type: 'update', payload: value });
     }
+    setValue('');
   };
 
-  const handleChange = (e) => {
-    // console.log(e.slice(-1));
-    setValue(e);
-  };
-
-  return (
+  return useMemo(() => (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
+        <TextInput ref={inputRef} value={value} onValueChange={(e) => setValue(e)} placeholder="What are you going to do?" />
       </FlexCell>
-      <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
+      {
+        editedTodo
+          ? <Button color="sky" caption="Update todo" onClick={handleSubmit} isDisabled={value === ''} />
+          : <Button color="grass" caption="Add todo" onClick={handleSubmit} isDisabled={value === ''} />
+      }
+
     </FlexRow>
-  );
+  ), [value, editedTodo]);
 }
