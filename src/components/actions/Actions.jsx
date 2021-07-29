@@ -2,6 +2,7 @@ import React from 'react';
 import { FlexRow } from '@epam/loveship';
 
 import ActionButton from './ActionButton';
+import { ACTIONS_TYPES } from '../consts/consts';
 
 export default function Actions({ id, dispatch }) {
   return (
@@ -9,9 +10,13 @@ export default function Actions({ id, dispatch }) {
       <ActionButton
         label="edit"
         color="sky"
-        handleClick={() => dispatch({ type: 'edit_button_clicked', payload: id })}
+        handleClick={() => dispatch({ type: ACTIONS_TYPES.EDIT_BUTTON_CLICKED, payload: id })}
       />
-      <ActionButton label="delete" color="fire" handleClick={() => dispatch({ type: 'delete', payload: id })} />
+      <ActionButton
+        label="delete"
+        color="fire"
+        handleClick={() => dispatch({ type: ACTIONS_TYPES.DELETE, payload: id })}
+      />
     </FlexRow>
   );
 }

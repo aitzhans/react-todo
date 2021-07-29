@@ -1,46 +1,40 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
-import FILTERS from '../consts/consts';
-import { TodoListContext } from '../todo-context/TodoContext';
+import { FILTERS } from '../consts/consts';
+import { TodoListContext } from '../todo-context/todoContext';
 
 export default function Tabs() {
-  const { todos, filterTodos, todosCount } = useContext(TodoListContext);
-  const [value, onValueChange] = useState('To do');
+  const { selectedTab, setSelectedTab, todos } = useContext(TodoListContext);
+  const allTodosCount = todos.length;
+  const notCompletedTodosCount = todos.filter((todo) => !todo.done).length;
+  const completedTodosCount = allTodosCount - notCompletedTodosCount;
 
-  const handleTabClick = (filter) => {
-    filterTodos(filter);
-    onValueChange(filter);
-  };
-
-  useEffect(() => {
-    filterTodos(value);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos]);
-
-  return (
+  return useMemo(() => (
     <FlexCell grow={1}>
       <FlexRow borderBottom="gray40" background="none">
         <TabButton
           caption="All"
-          isLinkActive={value === FILTERS.ALL}
-          onClick={() => handleTabClick(FILTERS.ALL)}
+          isLinkActive={selectedTab === FILTERS.ALL}
+          onClick={() => setSelectedTab(FILTERS.ALL)}
+          count={allTodosCount}
           size="36"
         />
         <TabButton
           caption="To do"
-          isLinkActive={value === FILTERS.TODO}
-          onClick={() => handleTabClick(FILTERS.TODO)}
-          count={todosCount}
+          isLinkActive={selectedTab === FILTERS.TODO}
+          onClick={() => setSelectedTab(FILTERS.TODO)}
+          count={notCompletedTodosCount}
           size="36"
         />
         <TabButton
           caption="Done"
-          isLinkActive={value === FILTERS.DONE}
-          onClick={() => handleTabClick(FILTERS.DONE)}
+          isLinkActive={selectedTab === FILTERS.DONE}
+          onClick={() => setSelectedTab(FILTERS.DONE)}
+          count={completedTodosCount}
           size="36"
         />
       </FlexRow>
     </FlexCell>
-  );
+  ), [selectedTab, todos]);
 }

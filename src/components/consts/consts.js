@@ -4,4 +4,12 @@ const FILTERS = {
   DONE: 'Done'
 };
 
-export default FILTERS;
+const ACTIONS_TYPES = {
+  CHECK_UNCHECK: 'checkUncheck',
+  ADD: 'add',
+  EDIT_BUTTON_CLICKED: 'edit_button_clicked',
+  UPDATE: 'update',
+  DELETE: 'delete',
+};
+
+export { FILTERS, ACTIONS_TYPES };

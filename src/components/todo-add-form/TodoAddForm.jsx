@@ -6,14 +6,12 @@ import {
 } from '@epam/loveship';
 
 import { TodoListContext } from '../todo-context/todoContext';
+import { ACTIONS_TYPES } from '../consts/consts';
 
 export default function TodoAddForm() {
   const { dispatch, editedTodo } = useContext(TodoListContext);
-  // const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
   const [value, setValue] = useState('');
   const inputRef = useRef(null);
-  // console.log(value);
-  // const [buttonCaption, setButtonCaption] = useState('Add Todo');
 
   useEffect(() => {
     if (editedTodo) {
@@ -24,9 +22,9 @@ export default function TodoAddForm() {
 
   const handleSubmit = () => {
     if (!editedTodo) {
-      dispatch({ type: 'add', payload: value });
+      dispatch({ type: ACTIONS_TYPES.ADD, payload: value });
     } else {
-      dispatch({ type: 'update', payload: value });
+      dispatch({ type: ACTIONS_TYPES.UPDATE, payload: value });
     }
     setValue('');
   };

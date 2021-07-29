@@ -1,9 +1,7 @@
 import React from 'react';
 import { Text, FlexRow } from '@epam/loveship';
-// import styles from './TodoHeader.module.scss';
 
 export default function TodoHeader() {
-  // console.log(styles);
   return (
     <FlexRow>
       <Text

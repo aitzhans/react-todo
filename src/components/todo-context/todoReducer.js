@@ -1,3 +1,5 @@
+import { ACTIONS_TYPES as ACTIONS } from '../consts/consts';
+
 export const initialState = [
   {
     title: 'Cook the breakfast', done: true, id: 1, isEdited: false
@@ -12,16 +14,16 @@ export const initialState = [
 
 export const todoReducer = (state, action) => {
   switch (action.type) {
-    case 'checkUncheck':
+    case ACTIONS.CHECK_UNCHECK:
       return state.map((todo) => (todo.id === action.payload ? { ...todo, done: !todo.done } : todo));
-    case 'add':
-      return [...state, { title: action.payload, done: false, id: new Date().getUTCMilliseconds() }];
-    case 'edit_button_clicked':
+    case ACTIONS.ADD:
+      return [...state, { title: action.payload, done: false, id: new Date().toISOString() }];
+    case ACTIONS.EDIT_BUTTON_CLICKED:
       if (state.find((todo) => todo.isEdited)) return state;
       return state.map((todo) => (todo.id === action.payload ? { ...todo, isEdited: !todo.isEdited } : todo));
-    case 'update':
+    case ACTIONS.UPDATE:
       return state.map((todo) => (todo.isEdited ? { ...todo, title: action.payload, isEdited: !todo.isEdited } : todo));
-    case 'delete':
+    case ACTIONS.DELETE:
       return state.filter((todo) => todo.id !== action.payload);
     default:
       return state;
