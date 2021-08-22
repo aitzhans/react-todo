@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
 import { FILTERS, ACTIONS_TYPES } from '../consts/consts';
