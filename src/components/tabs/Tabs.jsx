@@ -1,40 +1,47 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo } from 'react';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
-import { FILTERS } from '../consts/consts';
+import { FILTERS, ACTIONS_TYPES } from '../consts/consts';
 import { TodoListContext } from '../todo-context/todoContext';
 
 export default function Tabs() {
-  const { selectedTab, setSelectedTab, todos } = useContext(TodoListContext);
+  const { selectedTab, dispatch, todos } = useContext(TodoListContext);
   const allTodosCount = todos.length;
   const notCompletedTodosCount = todos.filter((todo) => !todo.done).length;
   const completedTodosCount = allTodosCount - notCompletedTodosCount;
+
+  const handleTabClick = (clickedTab) => {
+    if (selectedTab !== clickedTab) {
+      dispatch({ type: ACTIONS_TYPES.FILTER, payload: clickedTab });
+    }
+  };
 
   return useMemo(() => (
     <FlexCell grow={1}>
       <FlexRow borderBottom="gray40" background="none">
         <TabButton
-          caption="All"
+          caption={FILTERS.ALL}
           isLinkActive={selectedTab === FILTERS.ALL}
-          onClick={() => setSelectedTab(FILTERS.ALL)}
+          onClick={() => handleTabClick(FILTERS.ALL)}
           count={allTodosCount}
           size="36"
         />
         <TabButton
-          caption="To do"
+          caption={FILTERS.TODO}
           isLinkActive={selectedTab === FILTERS.TODO}
-          onClick={() => setSelectedTab(FILTERS.TODO)}
+          onClick={() => handleTabClick(FILTERS.TODO)}
           count={notCompletedTodosCount}
           size="36"
         />
         <TabButton
-          caption="Done"
+          caption={FILTERS.DONE}
           isLinkActive={selectedTab === FILTERS.DONE}
-          onClick={() => setSelectedTab(FILTERS.DONE)}
+          onClick={() => handleTabClick(FILTERS.DONE)}
           count={completedTodosCount}
           size="36"
         />
       </FlexRow>
     </FlexCell>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   ), [selectedTab, todos]);
 }
