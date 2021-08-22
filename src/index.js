@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ContextProvider } from '@epam/uui';
 
-import App from './components/App';
+import App from './components/App/App';
 import './main.scss';
 import svc from './services';
 

@@ -1,51 +1,32 @@
-import React, { useContext, useState } from 'react';
-// import { FlexRow } from '@epam/loveship';
-import { DataTable } from '@epam/loveship';
-import { useArrayDataSource } from '@epam/uui';
+import React, {
+  useContext,
+} from 'react';
 
-import { TodoListContext } from '../todo-context/TodoContext';
-import TodoItem from '../todo-item';
-import Actions from '../actions/Actions';
+import { TodoListContext } from '../todo-context/todoContext';
+import { FILTERS } from '../consts/consts';
+
+import TodoItem from '../todo-item/TodoItem';
 
 export default function TodoList() {
-  const { filteredTodos } = useContext(TodoListContext);
-  const [value, onValueChange] = useState({});
+  const { todos, selectedTab } = useContext(TodoListContext);
 
-  const dataSource = useArrayDataSource({
-    items: filteredTodos,
-  });
+  const selectTodosBySelectedTab = (tabName, allTodos) => {
+    switch (tabName) {
+      case FILTERS.TODO:
+        return allTodos.filter((todo) => !todo.done);
+      case FILTERS.DONE:
+        return allTodos.filter((todo) => todo.done);
+      default:
+        return allTodos;
+    }
+  };
 
-  const view = dataSource.useView(value, onValueChange, {});
-
-  const columns = [
-    {
-      key: 'todo',
-      caption: 'Todo Task',
-      render: (item) => <TodoItem todo={item} />,
-      isAlwaysVisible: true,
-      grow: 0,
-      minWidth: 300,
-    },
-    {
-      key: 'actions',
-      caption: 'Possible Actions',
-      render: (item) => <Actions todo={item} />,
-      grow: 0,
-      shrink: 0,
-      minWidth: 200,
-    },
-  ];
+  // const visibleTodos = useMemo(() => selectTodosBySelectedTab(selectedTab, todos), [selectedTab, todos]);
+  const visibleTodos = selectTodosBySelectedTab(selectedTab, todos);
 
   return (
-    <DataTable
-      {...view.getListProps()}
-      value={value}
-      onValueChange={onValueChange}
-      columns={columns}
-      getRows={view.getVisibleRows}
-      headerTextCase="upper"
-      size="36"
-    />
-
+    <>
+      {visibleTodos.map((todo) => <TodoItem todo={todo} key={todo.id} />)}
+    </>
   );
 }

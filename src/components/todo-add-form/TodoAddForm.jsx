@@ -1,48 +1,54 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import {
-  FlexRow, FlexCell, TextInput, Button
+  FlexRow,
+  FlexCell,
+  TextInput,
+  Button,
 } from '@epam/loveship';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { TodoListContext } from '../todo-context/todoContext';
+import { ACTIONS_TYPES } from '../consts/consts';
 
 export default function TodoAddForm() {
-  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
-  const [value, setValue] = useState('');
-  const [buttonCaption, setButtonCaption] = useState('Add Todo');
+  const { dispatch, editedTodo } = useContext(TodoListContext);
+  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    if (editedValue) {
-      setValue(editedValue.title);
-      setButtonCaption('Edit Todo');
-      // console.log(editedValue);
-    } else {
-      setValue('');
+    if (editedTodo) {
+      inputRef.current.focus();
+      setInputValue(editedTodo.title);
     }
-  }, [editedValue]);
+  }, [editedTodo]);
 
-  const handleSubmit = () => {
-    if (value !== '') {
-      if (editedValue) {
-        updateTodo(value);
-      } else {
-        addTodo(value);
-      }
-      setValue('');
-      setButtonCaption('Add Todo');
-    }
+  const addTodo = () => {
+    dispatch({ type: ACTIONS_TYPES.ADD, payload: inputValue });
+    setInputValue('');
   };
 
-  const handleChange = (e) => {
-    // console.log(e.slice(-1));
-    setValue(e);
+  const updateTodo = () => {
+    dispatch({ type: ACTIONS_TYPES.UPDATE, payload: inputValue });
+    setInputValue('');
   };
 
-  return (
+  return useMemo(() => (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
+        <TextInput ref={inputRef} value={inputValue} onValueChange={(e) => setInputValue(e)} placeholder="What are you going to do?" />
       </FlexCell>
-      <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
+      {
+        editedTodo
+          ? <Button color="sky" caption="Update todo" onClick={updateTodo} isDisabled={inputValue === ''} />
+          : <Button color="grass" caption="Add todo" onClick={addTodo} isDisabled={inputValue === ''} />
+      }
+
     </FlexRow>
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [inputValue, editedTodo]);
 }
