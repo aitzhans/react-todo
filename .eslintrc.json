@@ -22,11 +22,10 @@
     "linebreak-style": 0,
     "react/jsx-filename-extension": 0,
     "array-bracket-spacing": 0,
-    "comma-dangle": 0,
+    "comma-dangle": 1,
     "react/prop-types": 0,
     "react/destructuring-assignment": 0,
     "react/display-name": 0,
-    "react/jsx-props-no-spreading": 0,
-    "no-case-declarations": 0
+    "react/jsx-props-no-spreading": 0
   }
 }
