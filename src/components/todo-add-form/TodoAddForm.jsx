@@ -1,48 +1,72 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
-  FlexRow, FlexCell, TextInput, Button
+  FlexRow,
+  FlexCell,
+  TextInput,
+  Button,
 } from '@epam/loveship';
 
-import { TodoListContext } from '../todo-context/TodoContext';
+import { addTodo, updateTodo } from '../../actionCreators';
 
 export default function TodoAddForm() {
-  const { addTodo, editedValue, updateTodo } = useContext(TodoListContext);
-  const [value, setValue] = useState('');
-  const [buttonCaption, setButtonCaption] = useState('Add Todo');
+  const editedTodo = useSelector((state) => state.editedTodo);
+  const dispatch = useDispatch();
+  const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef(null);
 
   useEffect(() => {
-    if (editedValue) {
-      setValue(editedValue.title);
-      setButtonCaption('Edit Todo');
-      // console.log(editedValue);
-    } else {
-      setValue('');
+    if (editedTodo) {
+      inputRef.current.focus();
+      setInputValue(editedTodo.title);
     }
-  }, [editedValue]);
+  }, [editedTodo]);
 
-  const handleSubmit = () => {
-    if (value !== '') {
-      if (editedValue) {
-        updateTodo(value);
-      } else {
-        addTodo(value);
-      }
-      setValue('');
-      setButtonCaption('Add Todo');
-    }
+  const addTodoClicked = () => {
+    dispatch(addTodo(inputValue));
+    setInputValue('');
   };
 
-  const handleChange = (e) => {
-    // console.log(e.slice(-1));
-    setValue(e);
+  const updateTodoClicked = () => {
+    dispatch(updateTodo(inputValue));
+    setInputValue('');
   };
 
   return (
     <FlexRow width="auto" vPadding="24">
       <FlexCell minWidth="300" width="auto">
-        <TextInput value={value} onValueChange={handleChange} placeholder="What are you going to do?" />
+        <TextInput
+          ref={inputRef}
+          value={inputValue}
+          onValueChange={(e) => setInputValue(e)}
+          placeholder="What are you going to do?"
+        />
       </FlexCell>
-      <Button color="grass" caption={buttonCaption} onClick={handleSubmit} />
+      {
+        editedTodo
+          ? (
+            <Button
+              color="sky"
+              caption="Update todo"
+              onClick={updateTodoClicked}
+              isDisabled={inputValue === ''}
+            />
+          )
+          : (
+            <Button
+              color="grass"
+              caption="Add todo"
+              onClick={addTodoClicked}
+              isDisabled={inputValue === ''}
+            />
+          )
+      }
+
     </FlexRow>
   );
 }
