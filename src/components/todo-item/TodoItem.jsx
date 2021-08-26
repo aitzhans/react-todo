@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { Checkbox, FlexRow, Button } from '@epam/loveship';
 
 import styles from './todoitem.module.css';
-import { checkUncheck, editButtonClicked, deleteTodo } from '../../actions/actionCreators';
+import { checkUncheck, editButtonClicked, deleteTodo } from '../../actionCreators';
 
 export default function TodoItem({ todo }) {
   const dispatch = useDispatch();
   const { title, done, id } = todo;
 
-  return (
+  return useMemo(() => (
     <FlexRow vPadding="12" spacing="12" borderBottom>
       <Checkbox
         cx={styles.checkbox}
@@ -33,5 +33,6 @@ export default function TodoItem({ todo }) {
         />
       </FlexRow>
     </FlexRow>
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [done, title]);
 }

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
 import { FILTERS } from '../../consts/consts';
-import { filterTodos } from '../../actions/actionCreators';
+import { filterTodos } from '../../actionCreators';
 
 export default function Tabs() {
   const { selectedTab, todos } = useSelector((state) => state);

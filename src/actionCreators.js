@@ -1,4 +1,4 @@
-import { ACTIONS_TYPES as ACTIONS } from '../consts/consts';
+import { ACTIONS_TYPES as ACTIONS } from './consts/consts';
 
 export const checkUncheck = (payload) => ({
   type: ACTIONS.CHECK_UNCHECK,

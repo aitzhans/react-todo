@@ -12,7 +12,7 @@ import {
   Button,
 } from '@epam/loveship';
 
-import { addTodo, updateTodo } from '../../actions/actionCreators';
+import { addTodo, updateTodo } from '../../actionCreators';
 
 export default function TodoAddForm() {
   const editedTodo = useSelector((state) => state.editedTodo);
