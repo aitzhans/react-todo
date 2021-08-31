@@ -5,10 +5,16 @@ export const checkUncheck = (payload) => ({
   payload,
 });
 
-export const addTodo = (payload) => ({
-  type: ACTIONS.ADD,
-  payload,
-});
+export const addTodo = (newTodo) => {
+  const id = new Date().toISOString();
+  return {
+    type: ACTIONS.ADD,
+    payload: {
+      title: newTodo,
+      id,
+    },
+  };
+};
 
 export const editButtonClicked = (payload) => ({
   type: ACTIONS.EDIT_BUTTON_CLICKED,

@@ -23,7 +23,7 @@ export default function todoReducer(state = initialState, action) {
         ...state,
         todos: [
           ...state.todos,
-          { title: action.payload, done: false, id: new Date().toISOString() },
+          { title: action.payload.title, done: false, id: action.payload.id },
         ],
       };
 
