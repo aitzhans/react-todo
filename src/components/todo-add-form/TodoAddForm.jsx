@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import {
   FlexRow,
@@ -15,7 +15,14 @@ import {
 import { addTodo, updateTodo } from '../../actionCreators';
 
 export default function TodoAddForm() {
-  const editedTodo = useSelector((state) => state.editedTodo);
+  // const editedTodo = useSelector((state) => state.editedTodo);
+
+  const editedTodo = useSelector(((state) => state.todos.find((todo) => todo.isEdited)), shallowEqual);
+
+  // useEffect(() => {
+  //   console.log('todos changed', editedTodo);
+  // }, [editedTodo]);
+
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef(null);
