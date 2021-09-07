@@ -9,7 +9,6 @@ const selectTodoById = (state, todoId) => state.todos.find((todo) => todo.id ===
 
 export default function TodoItem({ todoId }) {
   const todo = useSelector((state) => selectTodoById(state, todoId));
-  console.log(todoId, todo);
   const dispatch = useDispatch();
   const { title, done } = todo;
 

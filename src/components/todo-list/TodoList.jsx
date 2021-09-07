@@ -17,7 +17,6 @@ const selectTodosIds = ({ todos, selectedTab }) => {
 
 export default function TodoList() {
   const todosIds = useSelector(selectTodosIds, shallowEqual);
-  console.log(todosIds);
 
   return (
     <>
