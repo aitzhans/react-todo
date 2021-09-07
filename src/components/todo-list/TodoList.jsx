@@ -1,26 +1,27 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, shallowEqual } from 'react-redux';
 
 import { FILTERS } from '../../consts/consts';
 import TodoItem from '../todo-item/TodoItem';
 
-const selectVisibleTodos = ({ todos, selectedTab }) => {
+const selectTodosIds = ({ todos, selectedTab }) => {
   switch (selectedTab) {
     case FILTERS.TODO:
-      return todos.filter((todo) => !todo.done);
+      return (todos.filter((todo) => !todo.done)).map((todo) => todo.id);
     case FILTERS.DONE:
-      return todos.filter((todo) => todo.done);
+      return (todos.filter((todo) => todo.done)).map((todo) => todo.id);
     default:
-      return todos;
+      return (todos).map((todo) => todo.id);
   }
 };
 
 export default function TodoList() {
-  const visibleTodos = useSelector(selectVisibleTodos);
+  const todosIds = useSelector(selectTodosIds, shallowEqual);
+  console.log(todosIds);
 
   return (
     <>
-      {visibleTodos.map((todo) => <TodoItem todo={todo} key={todo.id} />)}
+      {todosIds.map((todoId) => <TodoItem todoId={todoId} key={todoId} />)}
     </>
   );
 }
