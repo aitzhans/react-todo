@@ -1,13 +1,22 @@
-import { FILTERS, ACTIONS_TYPES as ACTIONS } from '../consts/consts';
+import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = FILTERS.TODO;
+import { FILTERS } from '../consts/consts';
 
-export default function filtersReducer(state = initialState, action) {
-  switch (action.type) {
-    case ACTIONS.FILTER:
-      return action.payload;
+const initialState = {
+  selectedTab: FILTERS.TODO
+};
 
-    default:
-      return state;
+const filtersSlice = createSlice({
+  name: 'filters',
+  initialState,
+  reducers: {
+    tabChanged(state, action) {
+      console.log(state);
+      state.selectedTab = action.payload;
+    }
   }
-}
+});
+
+export const { tabChanged } = filtersSlice.actions;
+
+export default filtersSlice.reducer;

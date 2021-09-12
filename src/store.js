@@ -6,7 +6,7 @@ import filtersReducer from './reducerSlices/filtersSlice';
 const store = configureStore({
   reducer: {
     todos: todosReducer,
-    selectedTab: filtersReducer,
+    filters: filtersReducer,
   }
 });
 

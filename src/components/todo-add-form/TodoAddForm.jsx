@@ -12,16 +12,11 @@ import {
   Button,
 } from '@epam/loveship';
 
-import { addTodo, updateTodo } from '../../actionCreators';
+// import { addTodo, updateTodo } from '../../actionCreators';
+import { todoAdded, todoUpdated } from '../../reducerSlices/todosSlice';
 
 export default function TodoAddForm() {
-  // const editedTodo = useSelector((state) => state.editedTodo);
-
   const editedTodo = useSelector(((state) => state.todos.find((todo) => todo.isEdited)), shallowEqual);
-
-  // useEffect(() => {
-  //   console.log('todos changed', editedTodo);
-  // }, [editedTodo]);
 
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
@@ -35,12 +30,12 @@ export default function TodoAddForm() {
   }, [editedTodo]);
 
   const addTodoClicked = () => {
-    dispatch(addTodo(inputValue));
+    dispatch(todoAdded(inputValue));
     setInputValue('');
   };
 
   const updateTodoClicked = () => {
-    dispatch(updateTodo(inputValue));
+    dispatch(todoUpdated(inputValue));
     setInputValue('');
   };
 

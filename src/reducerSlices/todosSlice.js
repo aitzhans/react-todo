@@ -1,4 +1,6 @@
-import { ACTIONS_TYPES as ACTIONS } from '../consts/consts';
+import { createSlice } from '@reduxjs/toolkit';
+
+// import { ACTIONS_TYPES as ACTIONS } from '../consts/consts';
 
 const initialState = [
   {
@@ -12,27 +14,42 @@ const initialState = [
   },
 ];
 
-export default function todosReducer(state = initialState, action) {
-  switch (action.type) {
-    case ACTIONS.ADD:
-      return [
-        ...state,
-        { title: action.payload.title, done: false, id: action.payload.id },
-      ];
-
-    case ACTIONS.CHECK_UNCHECK:
-      return state.map((todo) => (todo.id === action.payload ? { ...todo, done: !todo.done } : todo));
-
-    case ACTIONS.DELETE:
-      return state.filter((todo) => todo.id !== action.payload);
-
-    case ACTIONS.EDIT_BUTTON_CLICKED:
-      return state.map((todo) => (todo.id === action.payload ? { ...todo, isEdited: true } : todo));
-
-    case ACTIONS.UPDATE:
-      return state.map((todo) => (todo.isEdited ? { ...todo, title: action.payload, isEdited: false } : todo));
-
-    default:
-      return state;
+const todosSlice = createSlice({
+  name: 'todos',
+  initialState,
+  reducers: {
+    todoAdded(state, action) {
+      const id = new Date().toISOString();
+      state.push({
+        title: action.payload, id, done: false, isEdited: false
+      });
+    },
+    todoToggled(state, action) {
+      const todo = state.find((todoEntity) => todoEntity.id === action.payload);
+      todo.done = !todo.done;
+    },
+    todoDeleted(state, action) {
+      const index = state.indexOf((todo) => todo.id === action.payload);
+      state.splice(index, 1);
+    },
+    editButtonClicked(state, action) {
+      const todo = state.find((todoEntity) => todoEntity.id === action.payload);
+      todo.isEdited = true;
+    },
+    todoUpdated(state, action) {
+      const editedTodo = state.find((todo) => todo.isEdited);
+      editedTodo.title = action.payload;
+      editedTodo.isEdited = false;
+    }
   }
-}
+});
+
+export const {
+  todoAdded,
+  todoToggled,
+  todoDeleted,
+  editButtonClicked,
+  todoUpdated
+} = todosSlice.actions;
+
+export default todosSlice.reducer;

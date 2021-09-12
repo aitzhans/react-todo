@@ -4,7 +4,8 @@ import { useSelector, shallowEqual } from 'react-redux';
 import { FILTERS } from '../../consts/consts';
 import TodoItem from '../todo-item/TodoItem';
 
-const selectTodosIds = ({ todos, selectedTab }) => {
+const selectTodosIds = ({ todos, filters }) => {
+  const { selectedTab } = filters;
   switch (selectedTab) {
     case FILTERS.TODO:
       return (todos.filter((todo) => !todo.done)).map((todo) => todo.id);

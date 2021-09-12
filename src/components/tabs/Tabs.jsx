@@ -3,18 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
 import { FILTERS } from '../../consts/consts';
-import { filterTodos } from '../../actionCreators';
+import { tabChanged } from '../../reducerSlices/filtersSlice';
 
 export default function Tabs() {
-  const { selectedTab, todos } = useSelector((state) => state);
+  const { filters, todos } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const { selectedTab } = filters;
   const allTodosCount = todos.length;
   const notCompletedTodosCount = todos.filter((todo) => !todo.done).length;
   const completedTodosCount = allTodosCount - notCompletedTodosCount;
 
   const handleTabClick = (clickedTab) => {
     if (selectedTab !== clickedTab) {
-      dispatch(filterTodos(clickedTab));
+      dispatch(tabChanged(clickedTab));
     }
   };
 
