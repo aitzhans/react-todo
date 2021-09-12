@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from 'react';
-import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
-import FILTERS from '../consts/consts';
-import { filterTodos } from '../../toolkit-reducer/todoSlice';
+import { FILTERS } from '../../consts/consts';
+import { filterTodos } from '../../actionCreators';
 
 export default function Tabs() {
+  const { selectedTab, todos } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const allTodosCount = todos.length;
+  const notCompletedTodosCount = todos.filter((todo) => !todo.done).length;
+  const completedTodosCount = allTodosCount - notCompletedTodosCount;
 
-  const todos = useSelector((state) => state.todos);
-  const todosCount = useSelector((state) => state.todosCount);
-  const [value, onValueChange] = useState('To do');
-
-  const handleTabClick = (filter) => {
-    dispatch(filterTodos(filter));
-    onValueChange(filter);
+  const handleTabClick = (clickedTab) => {
+    if (selectedTab !== clickedTab) {
+      dispatch(filterTodos(clickedTab));
+    }
   };
-
-  useEffect(() => {
-    dispatch(filterTodos(value));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [todos]);
 
   return (
     <FlexCell grow={1}>
       <FlexRow borderBottom="gray40" background="none">
         <TabButton
-          caption="All"
-          isLinkActive={value === FILTERS.ALL}
+          caption={FILTERS.ALL}
+          isLinkActive={selectedTab === FILTERS.ALL}
           onClick={() => handleTabClick(FILTERS.ALL)}
+          count={allTodosCount}
           size="36"
         />
         <TabButton
-          caption="To do"
-          isLinkActive={value === FILTERS.TODO}
+          caption={FILTERS.TODO}
+          isLinkActive={selectedTab === FILTERS.TODO}
           onClick={() => handleTabClick(FILTERS.TODO)}
-          count={todosCount}
+          count={notCompletedTodosCount}
           size="36"
         />
         <TabButton
-          caption="Done"
-          isLinkActive={value === FILTERS.DONE}
+          caption={FILTERS.DONE}
+          isLinkActive={selectedTab === FILTERS.DONE}
           onClick={() => handleTabClick(FILTERS.DONE)}
+          count={completedTodosCount}
           size="36"
         />
       </FlexRow>

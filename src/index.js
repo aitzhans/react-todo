@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { ContextProvider } from '@epam/uui';
 import { Provider } from 'react-redux';
 
-import App from './components/App';
+import store from './store';
+import App from './components/App/App';
 import './main.scss';
 import svc from './services';
-import store from './toolkit-reducer/store';
 
 import '@epam/uui-components/styles.css';
 import '@epam/loveship/styles.css';
@@ -25,5 +25,5 @@ ReactDOM.render(
   <Provider store={store}>
     <TodoApp />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

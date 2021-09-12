@@ -1,50 +1,26 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { DataTable } from '@epam/loveship';
-import { useArrayDataSource } from '@epam/uui';
+import React from 'react';
+import { useSelector, shallowEqual } from 'react-redux';
 
-import TodoItem from '../todo-item';
-import Actions from '../todo-actions/Actions';
+import { FILTERS } from '../../consts/consts';
+import TodoItem from '../todo-item/TodoItem';
+
+const selectTodosIds = ({ todos, selectedTab }) => {
+  switch (selectedTab) {
+    case FILTERS.TODO:
+      return (todos.filter((todo) => !todo.done)).map((todo) => todo.id);
+    case FILTERS.DONE:
+      return (todos.filter((todo) => todo.done)).map((todo) => todo.id);
+    default:
+      return (todos).map((todo) => todo.id);
+  }
+};
 
 export default function TodoList() {
-  const filteredTodos = useSelector((state) => state.filteredTodos);
-  const [value, onValueChange] = useState({});
-
-  const dataSource = useArrayDataSource({
-    items: filteredTodos,
-  });
-
-  const view = dataSource.useView(value, onValueChange, {});
-
-  const columns = [
-    {
-      key: 'todo',
-      caption: 'Todo Task',
-      render: (item) => <TodoItem todo={item} />,
-      isAlwaysVisible: true,
-      grow: 0,
-      minWidth: 300,
-    },
-    {
-      key: 'actions',
-      caption: 'Possible Actions',
-      render: (item) => <Actions todo={item} />,
-      grow: 0,
-      shrink: 0,
-      minWidth: 200,
-    },
-  ];
+  const todosIds = useSelector(selectTodosIds, shallowEqual);
 
   return (
-    <DataTable
-      {...view.getListProps()}
-      value={value}
-      onValueChange={onValueChange}
-      columns={columns}
-      getRows={view.getVisibleRows}
-      headerTextCase="upper"
-      size="36"
-    />
-
+    <>
+      {todosIds.map((todoId) => <TodoItem todoId={todoId} key={todoId} />)}
+    </>
   );
 }
