@@ -1,9 +1,11 @@
+import { combineReducers } from 'redux';
+
 import todosReducer from './reducerSlices/todosSlice';
 import filtersReducer from './reducerSlices/filtersSlice';
 
-export default function rootReducer(state = {}, action) {
-  return {
-    todos: todosReducer(state.todos, action),
-    selectedTab: filtersReducer(state.selectedTab, action),
-  };
-}
+const rootReducer = combineReducers({
+  todos: todosReducer,
+  selectedTab: filtersReducer,
+});
+
+export default rootReducer;
