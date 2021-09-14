@@ -9,8 +9,8 @@ export default function Tabs() {
   const { filters, todos } = useSelector((state) => state);
   const dispatch = useDispatch();
   const { selectedTab } = filters;
-  const allTodosCount = todos.length;
-  const notCompletedTodosCount = todos.filter((todo) => !todo.done).length;
+  const allTodosCount = Object.keys(todos).length;
+  const notCompletedTodosCount = Object.keys(todos).filter((key) => !todos[key].done).length;
   const completedTodosCount = allTodosCount - notCompletedTodosCount;
 
   const handleTabClick = (clickedTab) => {

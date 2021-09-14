@@ -1,18 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// import { ACTIONS_TYPES as ACTIONS } from '../consts/consts';
-
-const initialState = [
-  {
+const initialState = {
+  1: {
     title: 'Cook the breakfast', done: true, id: 1, isEdited: false,
   },
-  {
+  2: {
     title: 'Wash the dishes', done: false, id: 2, isEdited: false,
   },
-  {
+  3: {
     title: 'Write some code', done: false, id: 3, isEdited: false,
   },
-];
+};
 
 const todosSlice = createSlice({
   name: 'todos',
@@ -20,26 +18,23 @@ const todosSlice = createSlice({
   reducers: {
     todoAdded(state, action) {
       const id = new Date().toISOString();
-      state.push({
+      state[id] = {
         title: action.payload, id, done: false, isEdited: false
-      });
+      };
     },
     todoToggled(state, action) {
-      const todo = state.find((todoEntity) => todoEntity.id === action.payload);
-      todo.done = !todo.done;
+      state[action.payload].done = !state[action.payload].done;
     },
     todoDeleted(state, action) {
-      const index = state.indexOf((todo) => todo.id === action.payload);
-      state.splice(index, 1);
+      delete state[action.payload];
     },
     editButtonClicked(state, action) {
-      const todo = state.find((todoEntity) => todoEntity.id === action.payload);
-      todo.isEdited = true;
+      state[action.payload].isEdited = true;
     },
     todoUpdated(state, action) {
-      const editedTodo = state.find((todo) => todo.isEdited);
-      editedTodo.title = action.payload;
-      editedTodo.isEdited = false;
+      const { editedTitle, editedId } = action.payload;
+      state[editedId].title = editedTitle;
+      state[editedId].isEdited = false;
     }
   }
 });

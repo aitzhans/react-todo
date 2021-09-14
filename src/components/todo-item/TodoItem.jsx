@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Checkbox, FlexRow, Button } from '@epam/loveship';
 
 import styles from './todoitem.module.css';
 import { todoToggled, todoDeleted, editButtonClicked } from '../../reducerSlices/todosSlice';
 
-const selectTodoById = (state, todoId) => state.todos.find((todo) => todo.id === todoId);
-
 export default function TodoItem({ todoId }) {
-  const todo = useSelector((state) => selectTodoById(state, todoId));
+  const todo = useSelector((state) => state.todos[todoId]);
   const dispatch = useDispatch();
   const { title, done } = todo;
 
-  return (
+  return useMemo(() => (
     <FlexRow vPadding="12" spacing="12" borderBottom>
       <Checkbox
         cx={styles.checkbox}
@@ -36,5 +34,6 @@ export default function TodoItem({ todoId }) {
         />
       </FlexRow>
     </FlexRow>
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), [done, title]);
 }

@@ -11,7 +11,6 @@ const filtersSlice = createSlice({
   initialState,
   reducers: {
     tabChanged(state, action) {
-      console.log(state);
       state.selectedTab = action.payload;
     }
   }

@@ -8,11 +8,11 @@ const selectTodosIds = ({ todos, filters }) => {
   const { selectedTab } = filters;
   switch (selectedTab) {
     case FILTERS.TODO:
-      return (todos.filter((todo) => !todo.done)).map((todo) => todo.id);
+      return Object.keys(todos).filter((key) => !todos[key].done);
     case FILTERS.DONE:
-      return (todos.filter((todo) => todo.done)).map((todo) => todo.id);
+      return Object.keys(todos).filter((key) => todos[key].done);
     default:
-      return (todos).map((todo) => todo.id);
+      return Object.keys(todos);
   }
 };
 

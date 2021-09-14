@@ -12,11 +12,10 @@ import {
   Button,
 } from '@epam/loveship';
 
-// import { addTodo, updateTodo } from '../../actionCreators';
 import { todoAdded, todoUpdated } from '../../reducerSlices/todosSlice';
 
 export default function TodoAddForm() {
-  const editedTodo = useSelector(((state) => state.todos.find((todo) => todo.isEdited)), shallowEqual);
+  const editedTodo = useSelector((({ todos }) => todos[Object.keys(todos).find((key) => todos[key].isEdited)]), shallowEqual);
 
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
@@ -35,7 +34,7 @@ export default function TodoAddForm() {
   };
 
   const updateTodoClicked = () => {
-    dispatch(todoUpdated(inputValue));
+    dispatch(todoUpdated({ editedTitle: inputValue, editedId: editedTodo.id }));
     setInputValue('');
   };
 
