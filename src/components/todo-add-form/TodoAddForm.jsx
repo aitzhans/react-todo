@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useRef,
 } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   FlexRow,
@@ -12,10 +12,14 @@ import {
   Button,
 } from '@epam/loveship';
 
-import { todoAdded, todoUpdated } from '../../reducerSlices/todosSlice';
+import {
+  todoAdded,
+  todoUpdated,
+  selectEditedTodo
+} from '../../reducerSlices/todosSlice';
 
 export default function TodoAddForm() {
-  const editedTodo = useSelector((({ todos }) => todos[Object.keys(todos).find((key) => todos[key].isEdited)]), shallowEqual);
+  const editedTodo = useSelector(selectEditedTodo);
 
   const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState('');
@@ -29,7 +33,10 @@ export default function TodoAddForm() {
   }, [editedTodo]);
 
   const addTodoClicked = () => {
-    dispatch(todoAdded(inputValue));
+    const newTodo = {
+      title: inputValue, done: false, id: new Date().toISOString(), isEdited: false
+    };
+    dispatch(todoAdded(newTodo));
     setInputValue('');
   };
 

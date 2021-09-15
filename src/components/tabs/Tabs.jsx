@@ -4,14 +4,12 @@ import { TabButton, FlexRow, FlexCell } from '@epam/loveship';
 
 import { FILTERS } from '../../consts/consts';
 import { tabChanged } from '../../reducerSlices/filtersSlice';
+import { selectTodosCountByFilters } from '../../reducerSlices/todosSlice';
 
 export default function Tabs() {
-  const { filters, todos } = useSelector((state) => state);
+  const { selectedTab } = useSelector((state) => state.filters);
+  const { completedTodosCount, allTodosCount, notCompletedTodosCount } = useSelector(selectTodosCountByFilters);
   const dispatch = useDispatch();
-  const { selectedTab } = filters;
-  const allTodosCount = Object.keys(todos).length;
-  const notCompletedTodosCount = Object.keys(todos).filter((key) => !todos[key].done).length;
-  const completedTodosCount = allTodosCount - notCompletedTodosCount;
 
   const handleTabClick = (clickedTab) => {
     if (selectedTab !== clickedTab) {

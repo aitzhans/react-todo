@@ -3,10 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Checkbox, FlexRow, Button } from '@epam/loveship';
 
 import styles from './todoitem.module.css';
-import { todoToggled, todoDeleted, editButtonClicked } from '../../reducerSlices/todosSlice';
+import {
+  todoToggled,
+  todoDeleted,
+  editButtonClicked,
+  selectTodoById,
+} from '../../reducerSlices/todosSlice';
 
 export default function TodoItem({ todoId }) {
-  const todo = useSelector((state) => state.todos[todoId]);
+  const todo = useSelector((state) => selectTodoById(state, todoId));
   const dispatch = useDispatch();
   const { title, done } = todo;
 
