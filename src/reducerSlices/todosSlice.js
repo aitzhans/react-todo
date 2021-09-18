@@ -29,11 +29,13 @@ const todosSlice = createSlice({
   initialState,
   reducers: {
     todoDeleted: todosAdapter.removeOne,
-    todoAdded(state, action) {
-      const newTodo = {
-        id: nanoid(), title: action.payload, isEdited: false, done: false
-      };
-      todosAdapter.addOne(state, newTodo);
+    todoAdded: {
+      reducer: todosAdapter.addOne,
+      prepare: (value) => ({
+        payload: {
+          id: nanoid(), title: value, isEdited: false, done: false
+        }
+      })
     },
     todoToggled(state, action) {
       const todoId = action.payload;
