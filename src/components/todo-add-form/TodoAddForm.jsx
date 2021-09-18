@@ -33,15 +33,12 @@ export default function TodoAddForm() {
   }, [editedTodo]);
 
   const addTodoClicked = () => {
-    const newTodo = {
-      title: inputValue, done: false, id: new Date().toISOString(), isEdited: false
-    };
-    dispatch(todoAdded(newTodo));
+    dispatch(todoAdded(inputValue));
     setInputValue('');
   };
 
   const updateTodoClicked = () => {
-    dispatch(todoUpdated({ editedTitle: inputValue, editedId: editedTodo.id }));
+    dispatch(todoUpdated({ id: editedTodo.id, newTitle: inputValue }));
     setInputValue('');
   };
 

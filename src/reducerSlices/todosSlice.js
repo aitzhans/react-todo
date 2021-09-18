@@ -1,6 +1,10 @@
 import {
-  createSlice, createEntityAdapter, createSelector
+  createSlice,
+  createEntityAdapter,
+  createSelector,
+  nanoid,
 } from '@reduxjs/toolkit';
+
 import { FILTERS } from '../consts/consts';
 
 const todosAdapter = createEntityAdapter();
@@ -25,7 +29,12 @@ const todosSlice = createSlice({
   initialState,
   reducers: {
     todoDeleted: todosAdapter.removeOne,
-    todoAdded: todosAdapter.addOne,
+    todoAdded(state, action) {
+      const newTodo = {
+        id: nanoid(), title: action.payload, isEdited: false, done: false
+      };
+      todosAdapter.addOne(state, newTodo);
+    },
     todoToggled(state, action) {
       const todoId = action.payload;
       const todo = state.entities[todoId];
@@ -37,10 +46,10 @@ const todosSlice = createSlice({
       todo.isEdited = true;
     },
     todoUpdated(state, action) {
-      const { editedTitle, editedId } = action.payload;
-      const editedTodo = state.entities[editedId];
-      editedTodo.title = editedTitle;
-      editedTodo.isEdited = false;
+      const { id, newTitle } = action.payload;
+      const updatedTodo = state.entities[id];
+      updatedTodo.title = newTitle;
+      updatedTodo.isEdited = false;
     }
   }
 });
