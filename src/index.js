@@ -11,6 +11,11 @@ import svc from './services';
 import '@epam/uui-components/styles.css';
 import '@epam/loveship/styles.css';
 
+import './api/server';
+import { fetchTodos } from './reducerSlices/todosSlice';
+
+store.dispatch(fetchTodos());
+
 const TodoApp = () => (
   <ContextProvider
     apiDefinition={() => null}

@@ -2,41 +2,37 @@ import {
   createSlice,
   createEntityAdapter,
   createSelector,
-  nanoid,
+  createAsyncThunk,
 } from '@reduxjs/toolkit';
 
 import { FILTERS } from '../consts/consts';
 
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+  const response = (await fetch('api/todos')).json();
+  return response;
+});
+
+export const saveTodo = createAsyncThunk('todos/saveTodo', async (text) => {
+  const response = (await fetch('api/todos', {
+    method: 'POST',
+    body: JSON.stringify(text)
+  })).json();
+  return response;
+});
+
+export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id) => {
+  await fetch(`api/todos/${id}`, { method: 'DELETE' });
+  return id;
+});
+
 const todosAdapter = createEntityAdapter();
 
-const initialState = todosAdapter.getInitialState({
-  ids: [1, 2, 3],
-  entities: {
-    1: {
-      title: 'Cook the breakfast', done: true, id: 1, isEdited: false,
-    },
-    2: {
-      title: 'Wash the dishes', done: false, id: 2, isEdited: false,
-    },
-    3: {
-      title: 'Write some code', done: false, id: 3, isEdited: false,
-    },
-  }
-});
+const initialState = todosAdapter.getInitialState({});
 
 const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    todoDeleted: todosAdapter.removeOne,
-    todoAdded: {
-      reducer: todosAdapter.addOne,
-      prepare: (value) => ({
-        payload: {
-          id: nanoid(), title: value, isEdited: false, done: false
-        }
-      })
-    },
     todoToggled(state, action) {
       const todoId = action.payload;
       const todo = state.entities[todoId];
@@ -53,7 +49,13 @@ const todosSlice = createSlice({
       updatedTodo.title = newTitle;
       updatedTodo.isEdited = false;
     }
-  }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodos.fulfilled, todosAdapter.setAll)
+      .addCase(saveTodo.fulfilled, todosAdapter.addOne)
+      .addCase(deleteTodo.fulfilled, todosAdapter.removeOne);
+  },
 });
 
 export const {

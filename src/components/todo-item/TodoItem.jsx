@@ -5,9 +5,9 @@ import { Checkbox, FlexRow, Button } from '@epam/loveship';
 import styles from './todoitem.module.css';
 import {
   todoToggled,
-  todoDeleted,
   editButtonClicked,
   selectTodoById,
+  deleteTodo
 } from '../../reducerSlices/todosSlice';
 
 export default function TodoItem({ todoId }) {
@@ -35,7 +35,7 @@ export default function TodoItem({ todoId }) {
           fill="light"
           caption="delete"
           color="fire"
-          onClick={() => dispatch(todoDeleted(todoId))}
+          onClick={() => dispatch(deleteTodo(todoId))}
         />
       </FlexRow>
     </FlexRow>

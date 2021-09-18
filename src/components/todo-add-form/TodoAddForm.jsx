@@ -13,9 +13,9 @@ import {
 } from '@epam/loveship';
 
 import {
-  todoAdded,
   todoUpdated,
-  selectEditedTodo
+  selectEditedTodo,
+  saveTodo
 } from '../../reducerSlices/todosSlice';
 
 export default function TodoAddForm() {
@@ -33,7 +33,7 @@ export default function TodoAddForm() {
   }, [editedTodo]);
 
   const addTodoClicked = () => {
-    dispatch(todoAdded(inputValue));
+    dispatch(saveTodo(inputValue));
     setInputValue('');
   };
 
