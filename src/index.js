@@ -1,13 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ContextProvider } from '@epam/uui';
+import { Provider } from 'react-redux';
 
-import App from './components/App';
+import store from './store';
+import App from './components/App/App';
 import './main.scss';
 import svc from './services';
 
 import '@epam/uui-components/styles.css';
 import '@epam/loveship/styles.css';
+
+import './api/server';
+import { fetchTodos } from './reducerSlices/todosSlice';
+
+store.dispatch(fetchTodos());
 
 const TodoApp = () => (
   <ContextProvider
@@ -19,4 +26,9 @@ const TodoApp = () => (
   </ContextProvider>
 );
 
-ReactDOM.render(<TodoApp />, document.getElementById('root'));
+ReactDOM.render(
+  <Provider store={store}>
+    <TodoApp />
+  </Provider>,
+  document.getElementById('root'),
+);
